@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anupam Singh — Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #7fff6e;
+    --accent2: #6eb8ff;
+    --accent3: #ff6eb4;
+    --accent4: #c084fc;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 6px var(--accent), 0 0 12px var(--accent);
+  }
+  .cursor-ring {
+    width: 28px; height: 28px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.1s ease, top 0.1s ease;
+    opacity: 0.7;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.25;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-socials { display: flex; gap: 0.5rem; }
+  .nav-socials a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.68rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--border);
+    letter-spacing: 0.05em;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .nav-socials a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+  .hero-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .first { color: var(--text); display: block; }
+  .hero h1 .last {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--accent);
+    display: block;
+  }
+  .hero-desc {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    max-width: 420px;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.8rem 2rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+  .hero-cta:hover { background: var(--accent); color: var(--bg); }
+  .hero-cta.secondary { border-color: var(--border); color: var(--muted); }
+  .hero-cta.secondary:hover { border-color: var(--accent2); color: var(--accent2); background: transparent; }
+
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border-left: 1px solid var(--border);
+    padding-left: 3rem;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: bob 2s ease-in-out infinite;
+  }
+  .scroll-line { width: 1px; height: 50px; background: linear-gradient(var(--accent), transparent); }
+  @keyframes bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 0;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 4rem;
+  }
+  .section-num {
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 0.4rem;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+  }
+  .project-card {
+    background: var(--bg);
+    padding: 2.5rem;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    transition: height 0.3s;
+  }
+  .project-card:hover::before { height: 100%; }
+  .project-card:hover { background: var(--surface); }
+  .project-card.ml::before  { background: var(--accent2); }
+  .project-card.data::before { background: var(--accent); }
+  .project-card.scrape::before { background: var(--accent4); }
+  .project-card.game::before { background: var(--accent3); }
+
+  .project-type {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid;
+    display: inline-block;
+  }
+  .project-type.ml    { color: var(--accent2); border-color: var(--accent2); }
+  .project-type.data  { color: var(--accent);  border-color: var(--accent);  }
+  .project-type.scrape{ color: var(--accent4); border-color: var(--accent4); }
+  .project-type.dsa   { color: var(--accent3); border-color: var(--accent3); }
+
+  .project-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    line-height: 1.3;
+  }
+  .project-card p {
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.7;
+    padding-bottom: 2rem;
+  }
+  .project-arrow {
+    position: absolute;
+    bottom: 1.8rem;
+    right: 2rem;
+    color: var(--muted);
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: transform 0.2s, color 0.2s;
+    display: block;
+  }
+  .project-card:hover .project-arrow { transform: translate(3px, -3px); color: var(--accent); }
+
+  /* SKILLS */
+  .dsa-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .dsa-left h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--accent);
+    line-height: 1;
+  }
+  .dsa-left p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 1rem;
+    line-height: 1.7;
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .badge.active { border-color: var(--accent); color: var(--accent); }
+
+  .dsa-right { display: flex; flex-direction: column; gap: 0.8rem; }
+  .skill-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 1.5rem;
+    border: 1px solid var(--border);
+    font-size: 0.8rem;
+    transition: border-color 0.2s;
+  }
+  .skill-row:hover { border-color: var(--accent); }
+  .skill-name { color: var(--text); letter-spacing: 0.05em; }
+  .skill-bar { display: flex; gap: 4px; }
+  .bar-dot { width: 8px; height: 8px; background: var(--border); border-radius: 50%; }
+  .bar-dot.filled { background: var(--accent); }
+
+  /* CERTS */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+  }
+  .cert-card {
+    background: var(--bg);
+    padding: 3rem 2.5rem;
+    transition: background 0.2s;
+    text-align: center;
+    position: relative;
+  }
+  .cert-card:hover { background: var(--surface); }
+  .cert-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--border);
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+  }
+  .cert-icon { font-size: 2rem; margin-bottom: 1.5rem; display: block; }
+  .cert-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .cert-card p { color: var(--muted); font-size: 0.75rem; line-height: 1.6; }
+  .cert-placeholder {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 1rem;
+    border-top: 1px dashed var(--border);
+    padding-top: 1rem;
+  }
+
+  /* EDUCATION */
+  .edu-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .edu-year {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-right: 1px solid var(--accent);
+    padding-right: 1.5rem;
+  }
+  .edu-content h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .edu-content .inst {
+    color: var(--accent2);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .edu-content .details {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .footer-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-right { color: var(--muted); font-size: 0.72rem; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-socials { display: none; }
+    .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stats { flex-direction: row; border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 2rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+    .dsa-block { grid-template-columns: 1fr; gap: 2rem; }
+    .certs-grid { grid-template-columns: 1fr; }
+    .edu-card { grid-template-columns: 1fr; }
+    .edu-year { writing-mode: horizontal-tb; transform: none; border-right: none; border-bottom: 1px solid var(--accent); padding-right: 0; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="nav-logo">AS/</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#education">Education</a></li>
+  </ul>
+  <div class="nav-socials">
+    <a href="https://github.com/Kirisaki00" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/Kirisaki" target="_blank">LinkedIn</a>
+    <a href="https://instagram.com/Kirisaki_Senpai" target="_blank">Instagram</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrapper" style="width:100%">
+    <div class="hero-inner">
+      <div>
+        <h1>
+          <span class="first">Anupam</span>
+          <span class="last">Singh</span>
+        </h1>
+        <p class="hero-desc">
+          Jack of all trades — I build whatever excites me. Games, ML models, websites, scrapers, apps — if it can be built, I'm interested. Passionate about learning and creating things from scratch.
+        </p>
+        <div class="hero-btns">
+          <a href="#projects" class="hero-cta">View Work →</a>
+          <a href="/cdn-cgi/l/email-protection#7c17150e150f1d17150f19120c1d15453c1b111d1510521f1311" class="hero-cta secondary">Get In Touch →</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100+</div>
+          <div class="stat-label">DSA Problems</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4th</div>
+          <div class="stat-label">Semester</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrapper">
+    <div class="section-header">
+      <span class="section-num">00/</span>
+      <h2 class="section-title">About</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;">
+      <div>
+        <p style="font-size:1.05rem;line-height:1.9;color:var(--text);margin-bottom:1.5rem;">
+          I'm <span style="color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;">Anupam Singh</span> — a developer who doesn't like staying in one lane. Game dev, machine learning, data analysis, web scraping, apps — if it can be built, I'll build it.
+        </p>
+        <p style="font-size:0.88rem;line-height:1.9;color:var(--muted);margin-bottom:1.5rem;">
+          I define myself as a <span style="color:var(--text);font-style:italic;">jack of all trades</span> — and I wear that proudly. I believe the best developers are the ones who stay curious and keep building, regardless of the domain. Every project is a new puzzle, and I'm always up for it.
+        </p>
+        <p style="font-size:0.88rem;line-height:1.9;color:var(--muted);">
+          Currently a B.Tech CSE student at NIET, Greater Noida — spending my time between solving DSA problems, training ML models, and occasionally getting lost in an anime or an online game.
+        </p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.5rem;">
+        <div style="border:1px solid var(--border);padding:1.8rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Currently Building</div>
+          <p style="font-size:0.82rem;color:var(--muted);line-height:1.7;">ML models, Unity games, and anything new that catches my eye. Also preparing for the <span style="color:var(--accent);">JLPT Japanese Language test</span> — because why not learn a new language too. Always learning, always shipping.</p>
+        </div>
+        <div style="border:1px solid var(--border);padding:1.8rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent3);margin-bottom:1rem;">Hobbies</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+            <span style="padding:0.3rem 0.8rem;border:1px solid var(--border);font-size:0.68rem;letter-spacing:0.1em;color:var(--muted);">⚔️ Online Gaming</span>
+            <span style="padding:0.3rem 0.8rem;border:1px solid var(--border);font-size:0.68rem;letter-spacing:0.1em;color:var(--muted);">🎌 Anime</span>
+            <span style="padding:0.3rem 0.8rem;border:1px solid var(--border);font-size:0.68rem;letter-spacing:0.1em;color:var(--muted);">💻 Coding</span>
+            <span style="padding:0.3rem 0.8rem;border:1px solid var(--border);font-size:0.68rem;letter-spacing:0.1em;color:var(--muted);">🎮 Game Dev</span>
+            <span style="padding:0.3rem 0.8rem;border:1px solid var(--border);font-size:0.68rem;letter-spacing:0.1em;color:var(--muted);">🇯🇵 Japanese (JLPT)</span>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);padding:1.8rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:1rem;">Philosophy</div>
+          <p style="font-size:0.95rem;font-family:'Syne',sans-serif;font-weight:700;color:var(--text);line-height:1.4;">"Jack of all trades —<br>master of none,<br>but better than master of one."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrapper">
+    <div class="section-header">
+      <span class="section-num">01/</span>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card ml">
+        <span class="project-type ml">ML · Logistic Regression</span>
+        <span style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#0a0a0f;background:var(--accent);padding:0.2rem 0.5rem;margin-left:0.5rem;vertical-align:middle;">● LIVE</span>
+        <h3>Breast Cancer Prediction</h3>
+        <p>Logistic Regression model trained on the Wisconsin dataset to classify tumors as malignant or benign with high accuracy.</p>
+        <a class="project-arrow" href="https://breastcancerprediction-using.onrender.com/" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card ml">
+        <span class="project-type ml">ML · Regression</span>
+        <h3>House Price Prediction</h3>
+        <p>ML regression model that predicts real estate prices using feature engineering and statistical analysis on housing datasets.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/HousePricePrediction-ML-Model-" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card ml">
+        <span class="project-type ml">ML · Healthcare</span>
+        <h3>Diabetes Prediction</h3>
+        <p>Binary classification model leveraging medical indicators to predict diabetes risk in patients, built with scikit-learn.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/DiabetesPrediction_ML_Model" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card data">
+        <span class="project-type data">EDA · Healthcare</span>
+        <h3>Heart Disease Analysis</h3>
+        <p>Exploratory data analysis on heart disease data — uncovering key risk factors, correlations, and visual insights through comprehensive EDA.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/HeartDiseaseAnalysis-EDA-MiniProject-" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card data">
+        <span class="project-type data">Data Analysis</span>
+        <h3>Black Friday Sales Analysis</h3>
+        <p>Deep-dive EDA into Black Friday sales — revealing consumer behaviour patterns, top product categories, and demographic trends.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/BlackFridaySales-DataAnalysis-MiniProject-" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card data">
+        <span class="project-type data">Data Analysis</span>
+        <h3>GDP Analysis</h3>
+        <p>Comprehensive analysis of global GDP trends — visualizing economic growth patterns and key factors impacting national income across countries.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/__GDP_Analysis-MiniProject-__" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card data">
+        <span class="project-type data">Data Analysis</span>
+        <h3>Sugarcane Production Analysis</h3>
+        <p>Data analysis on global sugarcane production trends, top producing countries, and agricultural output statistics.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/SugarCaneProduction-DataAnalysis_MiniProject-" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card scrape">
+        <span class="project-type scrape">Web Scraping · Python</span>
+        <h3>YouTube Scraper</h3>
+        <p>Python scraper that extracts YouTube data — video metadata, views, and channel information — for downstream analysis.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/YoutubeScraper" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card scrape">
+        <span class="project-type scrape">Web Scraping · Python</span>
+        <h3>Wikipedia Scraper</h3>
+        <p>Automated Wikipedia scraper using BeautifulSoup and Requests to extract structured article content and data at scale.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/WikipediaScraper" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card dsa">
+        <span class="project-type dsa">DSA · Java</span>
+        <h3>DSA Problem Solving</h3>
+        <p>100+ curated Data Structures & Algorithm problems solved in Java — arrays, linked lists, trees, graphs, sorting, and dynamic programming.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/DSA-Problem-Solving-Using-Java" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card game">
+        <span class="project-type" style="color:var(--accent3);border-color:var(--accent3)">Unity · Game Dev</span>
+        <h3>2D RPG Game</h3>
+        <p>A fully developed 2D RPG game built in Unity with C# — featuring custom game mechanics, character systems, and immersive gameplay.</p>
+        <a class="project-arrow" href="https://www.linkedin.com/feed/update/urn:li:activity:7419010581799718912/" target="_blank">↗</a>
+      </div>
+
+      <div class="project-card scrape">
+        <span class="project-type scrape">Web Scraping · Python</span>
+        <h3>Books & Quotes Scraper</h3>
+        <p>Dual web scraping project — extracts book listings from books.toscrape.com and quotes from quotes.toscrape.com using BeautifulSoup.</p>
+        <a class="project-arrow" href="https://github.com/Kirisaki00/WebScraping-From-books.toscrape.com-" target="_blank">↗</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrapper">
+    <div class="section-header">
+      <span class="section-num">02/</span>
+      <h2 class="section-title">Skills & DSA</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="dsa-block">
+      <div class="dsa-left">
+        <h3>100+</h3>
+        <p>Problems solved covering arrays, linked lists, trees, graphs, dynamic programming, and more. Consistent problem solver building strong algorithmic foundations.</p>
+        <span class="badge active">Java</span>
+        <span class="badge active">Local Practice</span>
+        <span class="badge">GitHub</span>
+      </div>
+      <div class="dsa-right">
+        <div class="skill-row">
+          <span class="skill-name">Python</span>
+          <div class="skill-bar">
+            <div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">C#</span>
+          <div class="skill-bar">
+            <div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot"></div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Java</span>
+          <div class="skill-bar">
+            <div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot"></div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Unity (Game Dev)</span>
+          <div class="skill-bar">
+            <div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot"></div><div class="bar-dot"></div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Machine Learning</span>
+          <div class="skill-bar">
+            <div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot"></div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Data Analysis</span>
+          <div class="skill-bar">
+            <div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot"></div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Pandas / NumPy</span>
+          <div class="skill-bar">
+            <div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot filled"></div><div class="bar-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs">
+  <div class="wrapper">
+    <div class="section-header">
+      <span class="section-num">03/</span>
+      <h2 class="section-title">Certifications</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <span class="cert-num">01</span>
+        <span class="cert-icon">🏅</span>
+        <h3>Certificate Name</h3>
+        <p>Platform / Issuing Organization</p>
+        <div class="cert-placeholder">Update with your cert details</div>
+      </div>
+      <div class="cert-card">
+        <span class="cert-num">02</span>
+        <span class="cert-icon">🏅</span>
+        <h3>Certificate Name</h3>
+        <p>Platform / Issuing Organization</p>
+        <div class="cert-placeholder">Update with your cert details</div>
+      </div>
+      <div class="cert-card">
+        <span class="cert-num">03</span>
+        <span class="cert-icon">🏅</span>
+        <h3>Certificate Name</h3>
+        <p>Platform / Issuing Organization</p>
+        <div class="cert-placeholder">Update with your cert details</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="wrapper">
+    <div class="section-header">
+      <span class="section-num">04/</span>
+      <h2 class="section-title">Education</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-year">2024 — Present</div>
+      <div class="edu-content">
+        <h3>Bachelor of Technology</h3>
+        <div class="inst">NIET — Noida Institute of Engineering and Technology, Greater Noida</div>
+        <div class="details">
+          Computer Science Engineering · Currently in 4th Semester<br>
+          Building a strong foundation in algorithms, data structures, software engineering, and emerging technologies.
+        </div>
+        <span class="badge active">4th Semester</span>
+        <span class="badge">B.Tech CSE</span>
+        <span class="badge">Greater Noida</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrapper">
+    <div class="footer-inner">
+      <div class="footer-name">Anupam Singh</div>
+      <div class="footer-links">
+        <a href="https://github.com/Kirisaki00" target="_blank">GitHub ↗</a>
+        <a href="https://linkedin.com/in/Kirisaki" target="_blank">LinkedIn ↗</a>
+        <a href="https://instagram.com/Kirisaki_Senpai" target="_blank">Instagram ↗</a>
+        <a href="/cdn-cgi/l/email-protection#4d26243f243e2c26243e28233d2c24740d2a202c2421632e2220">Email ↗</a>
+      </div>
+      <div class="footer-right">B.Tech CSE · NIET Greater Noida</div>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove
