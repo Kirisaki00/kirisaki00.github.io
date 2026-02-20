@@ -549,7 +549,7 @@
         </p>
         <div class="hero-btns">
           <a href="#projects" class="hero-cta">View Work →</a>
-          <a href="mailto:kirisakisenpai9@gmail.com" class="hero-cta secondary">Get In Touch →</a>
+          <a href="/cdn-cgi/l/email-protection#b5dedcc7dcc6d4dedcc6d0dbc5d4dc8cf5d2d8d4dcd99bd6dad8" class="hero-cta secondary">Get In Touch →</a>
         </div>
       </div>
       <div class="hero-stats">
@@ -783,6 +783,24 @@
         <h3>Cisco — Cyber Security</h3>
         <p>Cisco Academy</p>
       </div>
+      <div class="cert-card">
+        <span class="cert-num">04</span>
+        <span class="cert-icon">🐍</span>
+        <h3>OOP using Python</h3>
+        <p>Infosys Springboard</p>
+      </div>
+      <div class="cert-card">
+        <span class="cert-num">05</span>
+        <span class="cert-icon">📊</span>
+        <h3>Probability & Statistics using Python</h3>
+        <p>Infosys Springboard</p>
+      </div>
+      <div class="cert-card">
+        <span class="cert-num">06</span>
+        <span class="cert-icon">🧮</span>
+        <h3>DSA using Python</h3>
+        <p>Infosys Springboard</p>
+      </div>
     </div>
   </div>
 </section>
@@ -821,62 +839,57 @@
         <a href="https://github.com/Kirisaki00" target="_blank">GitHub ↗</a>
         <a href="https://linkedin.com/in/Kirisaki" target="_blank">LinkedIn ↗</a>
         <a href="https://instagram.com/Kirisaki_Senpai" target="_blank">Instagram ↗</a>
-        <a href="mailto:kirisakisenpai9@gmail.com">Email ↗</a>
+        <a href="/cdn-cgi/l/email-protection#cea5a7bca7bdafa5a7bdaba0beafa7f78ea9a3afa7a2e0ada1a3">Email ↗</a>
       </div>
       <div class="footer-right">B.Tech CSE · NIET Greater Noida</div>
     </div>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
 
-  // Only enable custom cursor if not touch device
   if (window.matchMedia('(pointer: fine)').matches) {
     document.body.style.cursor = 'none';
 
     let mouseX = 0, mouseY = 0;
     let ringX = 0, ringY = 0;
-    let isVisible = false;
+    let visible = false;
 
     document.addEventListener('mousemove', e => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-
       cursor.style.left = mouseX + 'px';
       cursor.style.top = mouseY + 'px';
-
-      if (!isVisible) {
+      if (!visible) {
         cursor.style.opacity = '1';
         ring.style.opacity = '0.7';
-        isVisible = true;
+        visible = true;
       }
     });
 
     document.addEventListener('mouseleave', () => {
       cursor.style.opacity = '0';
       ring.style.opacity = '0';
-      isVisible = false;
+      visible = false;
     });
 
     document.addEventListener('mouseenter', () => {
       cursor.style.opacity = '1';
       ring.style.opacity = '0.7';
-      isVisible = true;
+      visible = true;
     });
 
-    function animateRing() {
+    (function animateRing() {
       ringX += (mouseX - ringX) * 0.15;
       ringY += (mouseY - ringY) * 0.15;
       ring.style.left = ringX + 'px';
       ring.style.top = ringY + 'px';
       requestAnimationFrame(animateRing);
-    }
-    animateRing();
+    })();
 
-    const hoverTargets = document.querySelectorAll('a, button, .project-card, .skill-row, .cert-card');
-    hoverTargets.forEach(el => {
+    document.querySelectorAll('a, button, .project-card, .skill-row, .cert-card').forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursor.style.transform = 'translate(-50%, -50%) scale(2.5)';
         cursor.style.opacity = '0.6';
@@ -888,12 +901,9 @@
         ring.style.transform = 'translate(-50%, -50%) scale(1)';
       });
     });
-
   } else {
-    // Touch device — hide custom cursor elements
     cursor.style.display = 'none';
     ring.style.display = 'none';
-    document.body.style.cursor = 'auto';
   }
 </script>
 </body>
